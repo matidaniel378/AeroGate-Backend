@@ -1,12 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const User = require('../models/User'); // The model we created
+const User = require('../models/user');
 const app = express();
 
 app.use(express.json());
 
 // Your MongoDB Atlas Connection String
-const dbURI = "mongodb+srv://aerogate_admin:abenezer12@cluster0.mongodb.net/AeroGate?retryWrites=true&w=majority";
+const dbURI = 'mongodb+srv://aerogate_admin:abenezer12@cluster0.mongodb.net/AeroGate?retryWrites=true&w=majority';
 
 mongoose.connect(dbURI)
   .then(() => console.log('✅ Connected to MongoDB via Mongoose'))
@@ -14,12 +14,14 @@ mongoose.connect(dbURI)
 
 app.post('/api/signup', async (req, res) => {
   try {
-    const newUser = new User(req.body); // Uses the Schema for safety
+    const newUser = new User(req.body);
     await newUser.save();
-    res.status(201).json({ message: "User secured in database" });
+    res.status(201).json({ message: 'User secured in database' });
   } catch (error) {
-    res.status(400).json({ error: "Data validation failed" });
+    res.status(400).json({ error: 'Data validation failed' });
   }
 });
 
-app.listen(3000, () => console.log('🚀 API is live on Port 3000'));
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Server started on port ${process.env.PORT || 3000}`);
+});
